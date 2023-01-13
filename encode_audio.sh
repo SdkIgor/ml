@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-raw_voice_dir=audio_src
+raw_voice_dir=audio_new
 mono_voice_dir=audio_1ch
 
 mkdir -p $mono_voice_dir
