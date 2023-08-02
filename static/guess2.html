@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>Результат обзвона id#{{order_details.id}} и прогноз вероятности выхода</title>
+	<meta name="author" content="Pavel Serikov">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css">
+</head>
+<body>
+  <div class="container">
+
+    <div class="row">
+      <div class="col">
+        <h1>Результат обзвона id# {{order_details.id}}</h1>
+
+        <div class="alert alert-light" role="alert">
+          Параметры заказа<br>
+            Вертикаль: {{order_details.work_name}}<br>
+            Количество человек: {{order_details.people_n}}<br>
+            Дата: {{order_details.dt_start_human}}<br>
+            Вознаграждение на человека: {{order_details.price_rub}}<br>
+            Адрес: {{order_details.city_name}}, {{order_details.address}}<br>
+            Подробности: {{order_details.comment}}<br>
+
+            {% if 'question_ids' in order_details %}
+              Вопросы: {{order_details.question_ids}}<br>
+			{% endif %}
+        </div>
+
+        <h2>Потенциальные кандидаты</h2>
+
+        <table class="table" data-toggle="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">user_id</th>
+              <th scope="col">Фамилия</th>
+              <th scope="col">Имя</th>
+              <th scope="col">Телефон</th>
+              <th scope="col">Опыт</th>
+              <th scope="col">Статус звонка</th>
+              <th scope="col">callJobId</th>
+              <th scope="col">Прогноз</th>
+              <th scope="col">Вероятность</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in potential_workers.iterrows() %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+              <td>{{ value['user_id']}}</td>
+              <td>{{ value['last_name']}}</td>
+              <td>{{ value['first_name'] }}</td>
+              <td>{{ value['user_phone'] }}</td>
+              <td>{{ value['orders_completed'] }}</td>
+              <td>{{ value['jobStatus'] }}</td>
+              <td>{{ value['callJobId'] }}</td>
+              <td>{{ value['prediction_label'] }}</td>
+              <td>{{ value['prediction_score'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>Тест - Обзвон группы</title>
+	<meta name="author" content="Pavel Serikov">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css" integrity="sha512-2C6AmJKgt4B+bQc08/TwUeFKkq8CsBNlTaNcNgUmsDJSU1Fg+R6azDbho+ZzuxEkJnCjLZQMozSq3y97ZmgwjA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="container">
+
+    <div class="row">
+      <div class="col">
+        <h1>Обзвон тестовой группы</h1>
+        <p>
+          Эта страничка создана специально для проверки одновременного обзвона сразу на несколько тестовых номеров, вне зависимости есть ли они в базе<br>
+          Сами номера задаются в массиве grouptest_phones файла config.yml
+        </p>
+
+        <div class="alert alert-light" role="alert">
+          Параметры заказа<br>
+            Вертикаль: {{order_details.work_name}}<br>
+            Количество человек: {{order_details.people_n}}<br>
+            Дата: {{order_details.dt_start_human}}<br>
+            Вознаграждение на человека: {{order_details.price_rub}}<br>
+            Адрес: {{order_details.city_name}}, {{order_details.address}}<br>
+            Подробности: {{order_details.comment}}<br>
+						{% if 'question_ids' in order_details %}
+						Вопросы: {{order_details.question_ids}}<br>
+						{% endif %}
+        </div>
+
+        <h2>Потенциальные кандидаты</h2>
+
+				<div class="alert alert-info" role="alert">
+  				Количество потенциальных кандидатов: {{ potential_workers.shape[0] }}
+				</div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Телефон</th>
+              <th scope="col">user_id</th>
+              <th scope="col">Фамилия</th>
+              <th scope="col">Имя</th>
+              <th scope="col">Опыт</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in potential_workers.iterrows() %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+                <td>{{ value['user_phone'] }}</td>
+                <td>{{ value['user_id']}}</td>
+                <td>{{ value['last_name']}}</td>
+                <td>{{ value['first_name'] }}</td>
+                <td>{{ value['orders_completed'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <a type="button" class="btn btn-primary" href="/start-call/sample/2">Запустить обзвон</a>
+      <div>
+    </div>
+
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js" integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js" integrity="sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
