@@ -8,5 +8,5 @@ services:
         - TZ=Europe/Moscow
         - PYTHONPATH=/app/myguru-lib
         - MYGURU_AIMYLOGIC_TOKEN=${MYGURU_AIMYLOGIC_TOKEN}
-        - CRM_DB_DSN=${CRM_DB_DSN}
+        - MYGURU_CRM_DB_DSN=${MYGURU_CRM_DB_DSN}
         - MYGURU_MONEY_FUSE=${MYGURU_MONEY_FUSE}
