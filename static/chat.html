@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>Чат по заказу</title>
     <script>
-    window.juswidgetVariables=new Object();
-    window.juswidgetVariables.start=new Object();
-    window.juswidgetVariables.start.human_order_desc_intro="{{order_details.human_order_desc_intro}}";
-    window.juswidgetVariables.start.human_order_desc_details="{{order_details.human_order_desc_details}}";
+    {% if order_details is defined %}
+        window.juswidgetVariables=new Object();
+        window.juswidgetVariables.start=new Object();
+        window.juswidgetVariables.start.human_order_desc_intro="{{order_details.human_order_desc_intro}}";
+        window.juswidgetVariables.start.human_order_desc_details="{{order_details.human_order_desc_details}}";
+    {% endif %}
     </script>
     <script src="https://bot.jaicp.com/chatwidget/vwCRBNlh:49b7542c7480b8344b88b128e986e377d5f969da/justwidget.js?force=true" async></script>
 </head>
