@@ -16,6 +16,8 @@ import myguru_ab
 import myguru_crm as crmdb
 import myguru_sqlite_utils as botdb
 
+from myguru_utils import humanize_order_desc
+
 import pandas as pd
 
 botdb.init_con(database_name='flask_app.sqlite')
@@ -133,8 +135,17 @@ def get_job_status(job_id):
     return aimylogic.get_jobs_statuses([job_id])
     # return flask.jsonify(result)
 
+@app.route("/chat/demo", methods=["GET"])
+def render_demo_chat():
+    return render_template('chat.html')
 
-
+@app.route("/chat/<order_id>/<phone>", methods=["GET"])
+def render_chat(order_id, phone):
+    call_task_data = botdb.get_task(order_id)
+    print(call_task_data)
+    call_task_data['human_order_desc_intro'] = humanize_order_desc(call_task_data, "intro")
+    call_task_data['human_order_desc_details'] = humanize_order_desc(call_task_data, "details")
+    return render_template('chat.html', order_details=call_task_data)
 
 '''
 Два роута далее (/examples/2 и /start-call/sample/2) предназначены для теста одновременного звонка на несколько номеров
