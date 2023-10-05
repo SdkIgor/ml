@@ -113,7 +113,7 @@ def start_calls(order_id):
         jobs_arr = aimylogic.start_calls(call_task_data, phones)
         job_ids = [ i['callJobId'] for i in jobs_arr ]
 
-        print('job_ids got from aimylogic: ', job_ids1)
+        print('job_ids got from aimylogic: ', job_ids)
 
         callJobIds_json = pd.Series(job_ids).to_json(orient="records")
         botdb.add_callJobIds(order_id, callJobIds_json)
