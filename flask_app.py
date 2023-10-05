@@ -87,6 +87,8 @@ def start_calls(order_id):
     potential_workers_df = crmdb.get_potential_workers(call_task_data)
 
     if call_task_data['callJobIds']:
+        print(call_task_data['callJobIds'])
+        print('Aimylogic callJobIds found, querying statuses...')
         status_data = aimylogic.get_jobs_statuses(call_task_data['callJobIds']) # jobStatus
         call_status_df = pd.DataFrame.from_dict(status_data)  # callJobId, phone
         potential_workers_df = pd.merge(call_status_df, potential_workers_df, left_on='phone', right_on='user_phone')
@@ -104,10 +106,14 @@ def start_calls(order_id):
     limit = int(call_task_data['people_n'])
     call_queue_1 = potential_workers_df.head(limit)
 
+    print('Will make '+str(limit)+' new calls')
+
     try:
         phones = call_queue_1['user_phone'].to_list()
         jobs_arr = aimylogic.start_calls(call_task_data, phones)
         job_ids = [ i['callJobId'] for i in jobs_arr ]
+
+        print('job_ids got from aimylogic: ', job_ids1)
 
         callJobIds_json = pd.Series(job_ids).to_json(orient="records")
         botdb.add_callJobIds(order_id, callJobIds_json)
@@ -115,6 +121,8 @@ def start_calls(order_id):
         status_data = aimylogic.get_jobs_statuses(job_ids)  # jobStatus
         call_status_df = pd.DataFrame.from_dict(status_data)  # callJobId, phone
         potential_workers_df = pd.merge(call_status_df, potential_workers_df, left_on='phone', right_on='user_phone')
+
+        print(potential_workers_df)
     except Exception as e:
         return { "error": str(e) }
 
