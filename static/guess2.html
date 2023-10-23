@@ -56,7 +56,7 @@
               <td>{{ value['user_phone'] }}</td>
               <td>{{ value['orders_completed'] }}</td>
               <td>{{ value['jobStatus'] }}</td>
-              <td>{{ value['callJobId'] }}</td>
+              <td><a href="/api/status/{{ value['callJobId'] }}/">{{ value['callJobId'] }}</a></td>
               <td>{{ value['prediction_label'] }}</td>
               <td>{{ value['prediction_score'] }}</td>
             </tr>

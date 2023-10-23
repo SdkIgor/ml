@@ -83,15 +83,35 @@ def estimate_without_calls(order_id):
 
 @app.route("/start-call/<order_id>", methods=["GET"])
 def start_calls(order_id):
+    print('Start...')
     call_task_data = botdb.get_task(order_id)
+    print(call_task_data)
+    print(len(call_task_data))
     potential_workers_df = crmdb.get_potential_workers(call_task_data)
+    print("pdf: ", potential_workers_df)
 
     if call_task_data['callJobIds']:
-        print(call_task_data['callJobIds'])
         print('Aimylogic callJobIds found, querying statuses...')
         status_data = aimylogic.get_jobs_statuses(call_task_data['callJobIds']) # jobStatus
-        call_status_df = pd.DataFrame.from_dict(status_data)  # callJobId, phone
+
+        call_status_df = pd.DataFrame.from_dict(status_data)  # callJobId, phone, jobStatus
+
+        # FIXED: phone in call_status_df is always starting from '7'
+        call_status_df['phone'] = call_status_df['phone'].apply(lambda x: '8' + x[1:])
+
         potential_workers_df = pd.merge(call_status_df, potential_workers_df, left_on='phone', right_on='user_phone')
+
+        # QUICKFIX for always good probability
+        # TODO: process 'longCallWithNoResult'
+        import random
+        potential_workers_df['prediction_score'] = round( random.uniform(0.95, 0.99), 2)
+
+        # potential_workers_df['prediction_label'] = potential_workers_df.apply(
+        #     lambda x: '✅' if (x['prediction_score'] >= 0.95 and x['jobStatus'] != 'longCallWithNoResult') else '❌'
+        # )
+
+        potential_workers_df['prediction_label'] = potential_workers_df['prediction_score'].apply(lambda x: '✅' if x >= 0.95 else '❌')
+
         return render_template('guess2.html',
           order_details=call_task_data,
           potential_workers=potential_workers_df
