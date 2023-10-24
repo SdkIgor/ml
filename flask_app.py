@@ -85,10 +85,9 @@ def estimate_without_calls(order_id):
 def start_calls(order_id):
     print('Start...')
     call_task_data = botdb.get_task(order_id)
-    print(call_task_data)
-    print(len(call_task_data))
+    print('call_task_data: ', call_task_data)
     potential_workers_df = crmdb.get_potential_workers(call_task_data)
-    print("pdf: ", potential_workers_df)
+    print("potential_workers_df: ", potential_workers_df)
 
     if call_task_data['callJobIds']:
         print('Aimylogic callJobIds found, querying statuses...')
@@ -193,6 +192,7 @@ def render_sample_groupcall():
 def render_sample_groupcall_result():
     grouptest_phones = myguru_ab.get_config()['grouptest_phones']
     call_task_data = aimylogic.get_sample_groupcall_data()
+    print('call_task_data: ', call_task_data)
     jobs_arr = aimylogic.start_calls(call_task_data, grouptest_phones)
     job_ids = [ i['callJobId'] for i in jobs_arr ]
 

@@ -22,6 +22,13 @@ def start_calls(payload, phones, token=MYGURU_AIMYLOGIC_TOKEN, add_human_order_d
     '''
     url = "https://app.aimylogic.com/api/calls/campaign/"+token+"/addPhones"
 
+
+    # process ['question_ids'] to payload['q_count'],  payload['has_qX']
+    if payload['question_ids']:
+        payload['q_count'] = len(payload['question_ids'])
+        for qid in payload['question_ids']:
+            payload['has_q'+ str(qid) ] = 1
+
     if add_human_order_desc:
         payload['human_order_desc_intro'] = humanize_order_desc(payload, "intro")
         payload['human_order_desc_details'] = humanize_order_desc(payload, "details")
@@ -119,7 +126,8 @@ def get_sample_groupcall_data():
         "price_rub": 2000,
         "city_name": "Ростов-на-Дону",
         "address": "Будённовский проспект 45",
-        "comment": "Убрать строительный мусор"
+        "comment": "Убрать строительный мусор",
+        "question_ids": [ 1, 9 ]
     }
     return call_task_data
 
