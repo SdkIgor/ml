@@ -15,6 +15,7 @@ import aimylogic
 import myguru_ab
 import myguru_crm as crmdb
 import myguru_sqlite_utils as botdb
+import myguru_mongo_voip as whdb
 
 from myguru_utils import humanize_order_desc
 
@@ -69,6 +70,8 @@ def estimate_without_calls(order_id):
     data_for_ml[['ab_group_id', 'ab_question_id', 'days_from_app_last_visit']] = None
     predictions = s.predict_model(loaded_model, data=data_for_ml, probability_threshold = 0.95)
     predictions.sort_values(by="prediction_score", ascending=False, inplace=True)
+
+    print(predictions)
 
     df = predictions.copy(deep=True)
     df = df[predictions['user_phone'].notnull()]
@@ -161,6 +164,10 @@ def test_single_call():
 def get_job_status(job_id):
     return aimylogic.get_jobs_statuses([job_id])
     # return flask.jsonify(result)
+
+@app.route("/api/tts/<phone>/", methods=["GET"])
+def get_last_dialog(phone):
+    return whdb.get_last_answers(phone)
 
 @app.route("/chat/demo", methods=["GET"])
 def render_demo_chat():

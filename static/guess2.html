@@ -53,7 +53,7 @@
               <td>{{ value['user_id']}}</td>
               <td>{{ value['last_name']}}</td>
               <td>{{ value['first_name'] }}</td>
-              <td>{{ value['user_phone'] }}</td>
+              <td><a href="/api/tts/{{ value['user_phone'] }}/">{{ value['user_phone'] }}</a></td>
               <td>{{ value['orders_completed'] }}</td>
               <td>{{ value['jobStatus'] }}</td>
               <td><a href="/api/status/{{ value['callJobId'] }}/">{{ value['callJobId'] }}</a></td>

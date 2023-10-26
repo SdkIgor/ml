@@ -104,14 +104,14 @@ $( document ).ready(function() {
   $('#fillTestBtn2').click(function(event){
     event.preventDefault();
     var test_data = {
-        "work_id": 132, // "Caнтехника"
-        "city_id": 12, // "Москва"
+        "work_id": 134, // "Тест Мульти"
+        "city_id": 5, // "Волгоград"
         "people_n": 3,
         // "dt_start": "2023-03-23 17:00",
         "dt_start": new Date().toJSON().slice(0,16),
-        "address": "Лизюкова 4",
-        "price_rub": 3000,
-        "comment": "Нужно отремонтировать теплотрассу",
+        "address": "Ленина 2",
+        "price_rub": 1000,
+        "comment": "Нужно закатать асфальт",
         // "additional_question_ids": [ 1, 2, 5 ]
     }
     for (const [key, value] of Object.entries(test_data) ) {
@@ -119,8 +119,8 @@ $( document ).ready(function() {
     }
 
     var test_data_2 = {
-      "work_id": 132, // "Caнтехника"
-      "city_id": 12, // "Москва"
+      "work_id": 134,
+      "city_id": 5,
     };
     for (const [key, value] of Object.entries(test_data_2) ) {
       // el = $('select[name="work_id"]')

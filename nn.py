@@ -3,7 +3,7 @@
 import os
 import sys
 os.environ["PYCARET_CUSTOM_LOGGING_LEVEL"] = "CRITICAL"
-os.environ["PYTHONPATH"]="$PWD/myguru-lib"
+os.environ["PYTHONPATH"]="$PWD/myguru-lib"  # export PYTHONPATH=$PWD/myguru-lib
 
 '''
 Что это? Основной скрипт для MLOps, обертка для модуля myguru_ml
