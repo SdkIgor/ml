@@ -103,20 +103,32 @@ def start_calls(order_id):
 
         potential_workers_df = pd.merge(call_status_df, potential_workers_df, left_on='phone', right_on='user_phone')
 
+        from pycaret.classification import ClassificationExperiment
+        s = ClassificationExperiment()
+        loaded_model = s.load_model('neuro/my_best_pipeline')
+        from myguru_ml import preprocess_df
+        data_for_ml = preprocess_df(potential_workers_df, debug=False)
+
+        data_for_ml[['ab_group_id', 'days_from_app_last_visit']] = None
+        data_for_ml['ab_question_id'] = call_task_data['question_ids'][0]
+
+        predictions = s.predict_model(loaded_model, data=data_for_ml, probability_threshold=0.95)
+        predictions.sort_values(by="prediction_score", ascending=False, inplace=True)
+
         # QUICKFIX for always good probability
         # TODO: process 'longCallWithNoResult'
-        import random
-        potential_workers_df['prediction_score'] = round( random.uniform(0.95, 0.99), 2)
+        # import random
+        # potential_workers_df['prediction_score'] = round( random.uniform(0.95, 0.99), 2)
 
         # potential_workers_df['prediction_label'] = potential_workers_df.apply(
         #     lambda x: '✅' if (x['prediction_score'] >= 0.95 and x['jobStatus'] != 'longCallWithNoResult') else '❌'
         # )
 
-        potential_workers_df['prediction_label'] = potential_workers_df['prediction_score'].apply(lambda x: '✅' if x >= 0.95 else '❌')
+        # potential_workers_df['prediction_label'] = potential_workers_df['prediction_score'].apply(lambda x: '✅' if x >= 0.95 else '❌')
 
         return render_template('guess2.html',
           order_details=call_task_data,
-          potential_workers=potential_workers_df
+          potential_workers=predictions
         )
 
     # Вначале звоним не всем, а только тем, кого нейронка считает самым перспективным
@@ -210,7 +222,7 @@ def render_sample_groupcall_result():
 
     return render_template('guess2.html',
        order_details=call_task_data,
-       potential_workers=workers_df
+       potential_workers=predictions
     )
 
 if __name__ == '__main__':
